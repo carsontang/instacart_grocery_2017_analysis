@@ -2,3 +2,4 @@
 .idea
 *.so
 *.so.dSYM
+data/*
