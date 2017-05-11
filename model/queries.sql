@@ -6,13 +6,6 @@ LIMIT 10;
 
 SELECT * FROM order_products__train WHERE product_id = 42148;
 
-/* alter table orders alter column days_since_prior set data type numeric; */
-COPY orders(order_id, user_id, order_eval_set, order_number, order_dow, order_hour_of_day, days_since_prior) FROM '/Users/ctang/Downloads/instacart_2017_05_01/orders.csv' DELIMITER ',' CSV HEADER;
-COPY departments(department_id, department) FROM '/Users/ctang/Downloads/instacart_2017_05_01/departments.csv' DELIMITER ',' CSV HEADER;
-COPY aisles(aisle_id, aisle) FROM '/Users/ctang/Downloads/instacart_2017_05_01/aisles.csv' DELIMITER ',' CSV HEADER;
-COPY products(product_id, product_name, aisle_id, department_id) FROM '/Users/ctang/Downloads/instacart_2017_05_01/products.csv' DELIMITER ',' CSV HEADER;
-COPY order_products__train(order_id, product_id, add_to_cart_order, reordered) FROM '/Users/ctang/Downloads/instacart_2017_05_01/order_products__train.csv' DELIMITER ',' CSV HEADER;
-
 select p.product_name, d.department from products p inner join departments d on p.department_id = d.department_id;
 
 /* Top 10 departments with the most product listings */

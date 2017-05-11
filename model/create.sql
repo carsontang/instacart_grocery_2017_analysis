@@ -31,5 +31,16 @@ CREATE TABLE order_products__train (
 	order_id serial references orders(order_id),
 	product_id serial references products(product_id),
 	add_to_cart_order serial,
-	reordered boolean
+	reordered boolean,
+	PRIMARY KEY (order_id, product_id)
 );
+
+CREATE TABLE order_products__prior (
+	order_id serial references orders(order_id),
+	product_id serial references products(product_id),
+	add_to_cart_order serial,
+	reordered boolean,
+	PRIMARY KEY (order_id, product_id)
+);
+
+/* alter table orders alter column days_since_prior set data type numeric; */
