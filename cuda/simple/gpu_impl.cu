@@ -18,7 +18,7 @@ int add(int i, int j) {
 
     kernel_add<<<1, 1>>>(d_i, d_j, d_result);
 
-    cudaMemcpy(&result, d_result, cudaMemcpyDeviceToHost);
+    cudaMemcpy(&result, d_result, nBytes, cudaMemcpyDeviceToHost);
 
     cudaFree(d_i);
     cudaFree(d_j);
