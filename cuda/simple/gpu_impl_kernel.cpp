@@ -47,6 +47,8 @@ void parallel_add(int* arr1, int* arr2, int* result, const int n) {
     cudaMemcpy(d_arr1, arr1, nBytes, cudaMemcpyHostToDevice);
     cudaMemcpy(d_arr2, arr2, nBytes, cudaMemcpyHostToDevice);
 
+    // TODO (ctang): adjust the grid and block sizes
+    // Right now, only 32*32=1024 elements will be added.
     kernel_add_arrays<<<32, 32>>>(d_arr1, d_arr2, d_result, n);
 
     cudaMemcpy(result, d_result, nBytes, cudaMemcpyDeviceToHost);
@@ -54,6 +56,46 @@ void parallel_add(int* arr1, int* arr2, int* result, const int n) {
     cudaFree(d_arr1);
     cudaFree(d_arr2);
     cudaFree(d_result);
+
+    cudaDeviceReset();
+}
+
+void parallel_csrmv(
+    float* csr_vals,
+    int* csr_cols,
+    int* csr_rows,
+    float* vector,
+    float* result,
+    const int nnz
+    const int n_rows
+) {
+
+    // TODO(ctang): Rename this file to gpu_impl.cu
+
+    // Setup the spare matrix on the GPU
+    float *d_csrVals;
+    int *d_csrCols;
+    int *d_csrRows;
+    cudaMalloc((void **)&d_csrVals, nnz * sizeof(float));
+    cudaMalloc((void **)&d_csrCols, nnz * sizeof(int));
+    cudaMalloc((void **)&d_csrRows, (n_rows + 1) * sizeof(int));
+
+    // TODO (ctang): Fill out the following fields
+    // Perform matrix-vector multiplication with the CSR-formatted matrix A
+    cusparseScsrmv(
+        handle,
+        CUSPARSE_OPERATION_NON_TRANSPOSE,
+        M,
+        N,
+        totalNnz,
+        &alpha,
+        descr,
+        d_csrVals,
+        d_csrRows,
+        d_csrCols,
+        dX,
+        &beta,
+        dY);
 
     cudaDeviceReset();
 }

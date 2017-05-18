@@ -8,8 +8,8 @@ except ImportError as e:
 
 import numpy as np
 
-a1 = np.array([i for i in range(1000)])
-a2 = np.array([i for i in range(1000)])
+a1 = np.array([i for i in range(10000)])
+a2 = np.array([i for i in range(10000)])
 
 result = C.add_arrays(a1, a2)
 print result
