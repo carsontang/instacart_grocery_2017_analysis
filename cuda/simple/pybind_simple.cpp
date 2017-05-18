@@ -1,4 +1,5 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
 #include "pybind_simple.h"
 
 pybind11::array_t<int> add_arrays(pybind11::array_t<int> arr1, pybind11::array_t<int> arr2) {
