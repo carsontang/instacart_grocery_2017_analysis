@@ -4,14 +4,14 @@ __global__ void kernel_add(int *i, int *j, int *result) {
     *result = *i + *j;
 }
 
-__global__ void kernel_add_arrays(int *arr1, int *arr2, int *result, int n) {
+__global__ void kernel_add_arrays(int *arr1, int *arr2, int *result, const int n) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < n) {
         result[idx] = arr1[idx] + arr2[idx];
     }
 }
 
-int add(int i, int j) {
+int add(const int i, const int j) {
     size_t nBytes = sizeof(i);
     int result = 0;
 
@@ -36,7 +36,7 @@ int add(int i, int j) {
     return result;
 }
 
-void parallel_add(int* arr1, int* arr2, int* result, int n) {
+void parallel_add(int* arr1, int* arr2, int* result, const int n) {
     size_t nBytes = n * sizeof(int);
     int *d_arr1, *d_arr2, *d_result;
 
