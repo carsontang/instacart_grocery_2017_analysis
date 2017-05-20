@@ -1,5 +1,7 @@
+*.h5
 *.ipynb_checkpoints
 .idea
 *.so
 *.so.dSYM
 data/*
+
