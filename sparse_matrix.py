@@ -30,6 +30,38 @@ class SparseMatrix(object):
                 + sys.getsizeof(self.col_ind) \
                 + sys.getsizeof(self.row_ptr)
 
+    def dot(self, vector):
+        pass
+
+    def append(self, other):
+        col_ind = np.concatenate((self.col_ind, other.col_ind))
+        val = np.concatenate((self.val, other.val))
+
+        # Use self.row_ptr's last element as the
+        # first element of other.row_ptr. other.row_ptr then
+        # requires some modifications
+        other_row_ptr = map(lambda x: x-other.row_ptr[0], other.row_ptr)
+        other_row_ptr = other_row_ptr[1:]
+        other_row_ptr = map(lambda x: x + self.row_ptr[-1], other_row_ptr)
+
+        row_ptr = np.concatenate((self.row_ptr, other_row_ptr))
+        return SparseMatrix.wrap(val, col_ind, row_ptr)
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return np.array_equal(self.val, other.val) \
+                    and np.array_equal(self.row_ptr, other.row_ptr) \
+                    and np.array_equal(self.col_ind, other.col_ind)
+        return False
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+
+    @staticmethod
+    def wrap(val, col_ind, row_ptr):
+        return SparseMatrix(val, col_ind, row_ptr)
+
     @staticmethod
     def build(matrix):
         rows, cols = matrix.shape
@@ -49,6 +81,3 @@ class SparseMatrix(object):
 
         row_ptr = np.append(row_ptr, nnz)
         return SparseMatrix(val, col_ind, row_ptr)
-
-    def dot(self, vector):
-        pass
