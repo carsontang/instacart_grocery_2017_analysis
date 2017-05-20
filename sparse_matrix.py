@@ -33,20 +33,6 @@ class SparseMatrix(object):
     def dot(self, vector):
         pass
 
-    def append(self, other):
-        col_ind = np.concatenate((self.col_ind, other.col_ind))
-        val = np.concatenate((self.val, other.val))
-
-        # Use self.row_ptr's last element as the
-        # first element of other.row_ptr. other.row_ptr then
-        # requires some modifications
-        other_row_ptr = map(lambda x: x-other.row_ptr[0], other.row_ptr)
-        other_row_ptr = other_row_ptr[1:]
-        other_row_ptr = map(lambda x: x + self.row_ptr[-1], other_row_ptr)
-
-        row_ptr = np.concatenate((self.row_ptr, other_row_ptr))
-        return SparseMatrix.wrap(val, col_ind, row_ptr)
-
     def __eq__(self, other):
         if isinstance(other, self.__class__):
             return np.array_equal(self.val, other.val) \
@@ -81,3 +67,18 @@ class SparseMatrix(object):
 
         row_ptr = np.append(row_ptr, nnz)
         return SparseMatrix(val, col_ind, row_ptr)
+
+    @staticmethod
+    def concatenate(first, second):
+        col_ind = np.concatenate((first.col_ind, second.col_ind))
+        val = np.concatenate((first.val, second.val))
+
+        # Use self.row_ptr's last element as the
+        # first element of other.row_ptr. other.row_ptr then
+        # requires some modifications
+        other_row_ptr = map(lambda x: x-second.row_ptr[0], second.row_ptr)
+        other_row_ptr = other_row_ptr[1:]
+        other_row_ptr = map(lambda x: x + first.row_ptr[-1], other_row_ptr)
+
+        row_ptr = np.concatenate((first.row_ptr, other_row_ptr))
+        return SparseMatrix.wrap(val, col_ind, row_ptr)

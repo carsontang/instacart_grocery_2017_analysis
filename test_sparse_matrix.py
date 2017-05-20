@@ -56,7 +56,7 @@ class TestSparseMatrix(unittest.TestCase):
         lower_half = SparseMatrix.build(np.matrix('3 0 8 7 5 0; 0 8 0 9 9 13; 0 4 0 0 2 -1'))
         full_matrix = SparseMatrix.build(np.matrix('10 0 0 0 -2 0; 3 9 0 0 0 3; 0 7 8 7 0 0; 3 0 8 7 5 0; 0 8 0 9 9 13; 0 4 0 0 2 -1'))
 
-        self.assertEqual(full_matrix, upper_half.append(lower_half))
+        self.assertEqual(full_matrix, SparseMatrix.concatenate(upper_half, lower_half))
 
 
 if __name__ == '__main__':
